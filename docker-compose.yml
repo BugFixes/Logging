@@ -1,0 +1,21 @@
+version: '3'
+services:
+    sqs:
+        image: vsouza/sqs-local
+        ports:
+            - 9324:9324
+    node:
+        image: node:9
+        working_dir: /usr/local/app
+        environment:
+            - PORT=${PORT}
+            - HOST=${HOST}
+            - API_KEY=${API_KEY}
+            - API_SECRET=${API_SECRET}
+        links:
+            - sqs
+        ports:
+            - 82:82
+        volumes:
+            - ./:/usr/local/app
+        command: 'yarn start'
